@@ -1,6 +1,5 @@
 import { ArrowLeftIcon, Camera, Loader2Icon } from "lucide-react";
 import React, { useState } from "react";
-import { render } from "react-dom";
 export default function EditProfile() {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -142,4 +141,3 @@ export default function EditProfile() {
     </div>
   );
 }
-render(<EditProfile />, document.getElementById("root"));

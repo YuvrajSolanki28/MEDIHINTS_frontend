@@ -1,24 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SearchIcon, UserCircle, ChevronDown, Menu, X } from 'lucide-react';
+import { SearchIcon, UserCircle, ChevronDown, SettingsIcon, LogOutIcon, UserIcon } from 'lucide-react';
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 
 export default function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
   const navigate = useNavigate();
   const profileRef = useRef(null);
 
+  useEffect(() => {
+    // Check if user token exists in localStorage
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
   const handleBack = () => {
     navigate(-1);
   };
 
-
   const toggleProfileOptions = () => {
     setIsProfileOpen((prev) => !prev);
   };
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -32,10 +35,10 @@ export default function Navbar() {
     };
   }, []);
 
-
   const handleOptionClick = () => {
     setIsProfileOpen(false);
   };
+
 
   return (
     <header className="bg-[#1e2756] text-white">
@@ -50,13 +53,6 @@ export default function Navbar() {
             <span className="text-[#00a0ff]">HINTS</span>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden p-2 text-white"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
 
           {/* Desktop Links */}
           <div className="hidden lg:flex items-center space-x-8">
@@ -73,48 +69,66 @@ export default function Navbar() {
             <button className="p-2">
               <SearchIcon className="w-5 h-5" />
             </button>
-            <button className="px-4 py-2 text-blue-800 bg-white hover:bg-blue-200 rounded-full" onClick={() => navigate("/login")}>
-              Login
-            </button>
-            <button className="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-full" onClick={() => navigate("/appointment")}>
+            {!isLoggedIn && ( // Only show Login button if not logged in
+              <button
+                className="px-4 py-2 text-blue-800 bg-white hover:bg-blue-200 rounded-full"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </button>
+            )}
+            <button
+              className="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-full"
+              onClick={() => navigate("/appointment")}
+            >
               Appointment
             </button>
 
             {/* Profile Dropdown */}
             <div className="relative" ref={profileRef}>
               <button
-                className="flex items-center space-x-2 text-white hover:text-gray-300"
+                className="flex items-center space-x-2 text-white hover:text-gray-300 focus:outline-none"
                 onClick={toggleProfileOptions}
               >
                 <UserCircle className="h-6 w-6" />
                 <ChevronDown className="h-4 w-4" />
               </button>
 
+
               {/* Profile options dropdown */}
               {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg z-50">
-                  <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50 text-gray-800 border border-gray-200">
+                  <button
+                    className="flex w-full items-center text-left px-4 py-2 text-sm hover:bg-gray-100 focus:outline-none"
                     onClick={() => {
                       navigate("/userprofile");
                       handleOptionClick();
                     }}
+
                   >
+                    <UserIcon className="h-4 w-4 mr-2" />
                     My Profile
                   </button>
-                  <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  <button
+                    className="flex w-full items-center text-left px-4 py-2 text-sm hover:bg-gray-100 focus:outline-none"
                     onClick={() => {
                       navigate("/settings");
                       handleOptionClick();
                     }}
                   >
+                    <SettingsIcon className="h-4 w-4 mr-2" />
                     Settings
                   </button>
-                  <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  <button
+                    className="flex w-full items-center text-left px-4 py-2 text-sm hover:bg-gray-100 focus:outline-none text-red-500"
                     onClick={() => {
                       localStorage.removeItem("token");
+                      setIsLoggedIn(false); // Update the login state
                       navigate("/login");
+                      handleOptionClick();
                     }}
                   >
+                    <LogOutIcon className="h-4 w-4 mr-2" />
                     Logout
                   </button>
                 </div>
@@ -122,27 +136,6 @@ export default function Navbar() {
             </div>
           </div>
         </nav>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden flex flex-col space-y-4 mt-4 bg-[#1e2756] px-4 py-4">
-            <button className="hover:text-blue-500" onClick={() => navigate("/")}>Home</button>
-            <button className="hover:text-blue-500" onClick={() => navigate("/aboutus")}>About us</button>
-            <button className="hover:text-blue-500" onClick={() => navigate("/services")}>Services</button>
-            <button className="hover:text-blue-500" onClick={() => navigate("/doctors")}>Doctors</button>
-            <button className="hover:text-blue-500" onClick={() => navigate("/news")}>News</button>
-            <button className="hover:text-blue-500" onClick={() => navigate("/contact")}>Contact</button>
-            <button className="p-2 flex justify-start items-center">
-              <SearchIcon className="w-5 h-5 text-white" />
-            </button>
-            <button className="px-4 py-2 text-blue-800 bg-white hover:bg-blue-200 rounded-full" onClick={() => navigate("/login")}>
-              Login
-            </button>
-            <button className="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-full" onClick={() => navigate("/appointment")}>
-              Appointment
-            </button>
-          </div>
-        )}
       </div>
     </header>
   );
