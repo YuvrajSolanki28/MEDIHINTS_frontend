@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SearchIcon, UserCircle, ChevronDown, SettingsIcon, LogOutIcon, UserIcon } from 'lucide-react';
+import { UserCircle, ChevronDown, SettingsIcon, LogOutIcon, UserIcon } from 'lucide-react';
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 
-export default function Navbar() {
+const Navbar = ({ token }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
   const navigate = useNavigate();
   const profileRef = useRef(null);
+
 
   useEffect(() => {
     // Check if user token exists in localStorage
@@ -66,9 +67,7 @@ export default function Navbar() {
 
           {/* User Options (Search, Login, Appointment, Profile) */}
           <div className="hidden lg:flex items-center space-x-4">
-            <button className="p-2">
-              <SearchIcon className="w-5 h-5" />
-            </button>
+            
             {!isLoggedIn && ( // Only show Login button if not logged in
               <button
                 className="px-4 py-2 text-blue-800 bg-white hover:bg-blue-200 rounded-full"
@@ -94,21 +93,21 @@ export default function Navbar() {
                 <ChevronDown className="h-4 w-4" />
               </button>
 
-
               {/* Profile options dropdown */}
               {isProfileOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50 text-gray-800 border border-gray-200">
-                  <button
-                    className="flex w-full items-center text-left px-4 py-2 text-sm hover:bg-gray-100 focus:outline-none"
-                    onClick={() => {
-                      navigate("/userprofile");
-                      handleOptionClick();
-                    }}
-
-                  >
-                    <UserIcon className="h-4 w-4 mr-2" />
-                    My Profile
-                  </button>
+                  {isLoggedIn && ( // Only show "My Profile" if logged in
+                    <button
+                      className="flex w-full items-center text-left px-4 py-2 text-sm hover:bg-gray-100 focus:outline-none"
+                      onClick={() => {
+                        navigate(`/ProfilePage/${token}`);
+                        handleOptionClick();
+                      }}
+                    >
+                      <UserIcon className="h-4 w-4 mr-2" />
+                      My Profile
+                    </button>
+                  )}
                   <button
                     className="flex w-full items-center text-left px-4 py-2 text-sm hover:bg-gray-100 focus:outline-none"
                     onClick={() => {
@@ -123,6 +122,7 @@ export default function Navbar() {
                     className="flex w-full items-center text-left px-4 py-2 text-sm hover:bg-gray-100 focus:outline-none text-red-500"
                     onClick={() => {
                       localStorage.removeItem("token");
+                      localStorage.removeItem("uid");
                       setIsLoggedIn(false); // Update the login state
                       navigate("/login");
                       handleOptionClick();
@@ -140,3 +140,4 @@ export default function Navbar() {
     </header>
   );
 }
+export default Navbar;

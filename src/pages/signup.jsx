@@ -1,7 +1,7 @@
-import { LockIcon, UserIcon, EyeIcon, EyeOffIcon, UserCircleIcon, CheckIcon, XIcon } from "lucide-react";
+import { LockIcon, UserIcon, EyeIcon, EyeOffIcon, UserCircleIcon, CheckIcon, XIcon, LucideMapPin, Phone } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function SignupPage() {
@@ -16,6 +16,7 @@ export default function SignupPage() {
         address: "",
         age: "",
         gender: "",
+        bloodGroup: "",
         password: "",
         confirmPassword: "",
         termsAccepted: false,
@@ -30,14 +31,18 @@ export default function SignupPage() {
 
     useEffect(() => {
         const password = formData.password;
-        setValidations({
+        const newValidations = {
             minLength: password.length >= 8,
             hasUpper: /[A-Z]/.test(password),
             hasLower: /[a-z]/.test(password),
             hasNumber: /[0-9]/.test(password),
             hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-        });
+        };
+
+        setValidations(newValidations);
     }, [formData.password]);
+
+
 
     const ValidationItem = ({ satisfied, text }) => (
         <div className="flex items-center space-x-2">
@@ -62,13 +67,13 @@ export default function SignupPage() {
         });
     };
 
-    const isPasswordValid = Object.values(validations).every(Boolean);
+    const isPasswordValid = Object.values(validations).filter(Boolean).length >= 3;
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
 
         if (!isPasswordValid) {
-            toast.error("Please meet all password requirements");
+            toast.error("Please 3 validations password requirements");
             return;
         }
         if (formData.password !== formData.confirmPassword) {
@@ -105,7 +110,7 @@ export default function SignupPage() {
 
     return (
         <main className="min-h-screen w-full flex flex-col md:flex-row">
-            <ToastContainer />
+            <Toaster position="top-right" reverseOrder={false} />
             <div className="w-full md:w-1/2 min-h-[300px] md:min-h-screen relative">
                 <img
                     src="/signup.png"
@@ -160,10 +165,13 @@ export default function SignupPage() {
 
                         {/* Contact Number */}
                         <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <Phone className="h-5 w-5 text-gray-400" />
+                            </div>
                             <input
                                 type="tel"
                                 name="contactNumber"
-                                className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Contact Number"
                                 value={formData.contactNumber}
                                 onChange={handleChange}
@@ -172,29 +180,30 @@ export default function SignupPage() {
 
                         {/* Address */}
                         <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <LucideMapPin className="h-5 w-5 text-gray-400" />
+                            </div>
                             <input
                                 type="text"
                                 name="address"
-                                className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Address"
                                 value={formData.address}
                                 onChange={handleChange}
                             />
                         </div>
 
-                        {/* Age */}
+                        {/* Birth Date */}
                         <div className="relative">
                             <input
-                                type="number"
-                                name="age"
+                                type="date"
+                                name="birthDate"
                                 className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Age"
-                                min="1"
-                                max="120"
-                                value={formData.age}
+                                value={formData.birthDate}
                                 onChange={handleChange}
                             />
                         </div>
+
 
                         {/* Gender */}
                         <div className="relative">
@@ -210,6 +219,28 @@ export default function SignupPage() {
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                                 <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        {/* Blood Group */}
+                        <div className="relative">
+                            <select
+                                name="bloodGroup"
+                                className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                value={formData.bloodGroup}
+                                onChange={handleChange}
+                            >
+                                <option value="" className="text-gray-400">
+                                    Select Blood Group
+                                </option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
                             </select>
                         </div>
 

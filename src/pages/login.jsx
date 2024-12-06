@@ -1,7 +1,7 @@
 import { LockIcon, UserIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function LoginPage() {
@@ -51,17 +51,16 @@ export default function LoginPage() {
           body: JSON.stringify({ email, code: verificationCode }),
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          notifySuccess("Login successful!");
-          if (data.token) {
-            localStorage.setItem("token", data.token);
-          }
-          navigate("/");
-        } else {
-          const data = await response.json();
-          notifyError(data.message || "Invalid verification code");
-        }
+        const data = await response.json();
+                if (response.ok) {
+                    notifySuccess("Login successful!");
+                    localStorage.setItem("token", data.token);
+                    navigate("/");
+                    window.location.reload();
+                    
+                } else {
+                    notifyError(data.message || "Invalid verification code");
+                }
       } catch (error) {
         console.error("Error:", error);
         notifyError("An error occurred. Please try again.");
@@ -75,7 +74,7 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen w-full flex flex-col md:flex-row">
-      <ToastContainer position="top-right" autoClose={3000} />
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="w-full md:w-1/2 min-h-[300px] md:min-h-screen relative">
         <img src="/login.png" className="w-full h-full object-cover absolute inset-0" alt="Hospital" />
         <div className="absolute inset-0 bg-blue-900/70 flex items-center justify-center">

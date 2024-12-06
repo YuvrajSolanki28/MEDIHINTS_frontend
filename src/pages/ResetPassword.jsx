@@ -26,16 +26,18 @@ function ResetPassword() {
 
     useEffect(() => {
         const password = formData.newPassword;
-        setValidations({
+        const newValidations = {
             minLength: password.length >= 8,
             hasUpper: /[A-Z]/.test(password),
             hasLower: /[a-z]/.test(password),
             hasNumber: /[0-9]/.test(password),
             hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-        });
+        };
+    
+        setValidations(newValidations);
     }, [formData.newPassword]);
 
-    const isPasswordValid = Object.values(validations).every(Boolean);
+    const isPasswordValid = Object.values(validations).filter(Boolean).length >= 3;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,7 +45,7 @@ function ResetPassword() {
         setMessage('');
 
         if (!isPasswordValid) {
-            setError('Please meet all password requirements');
+            setError('Please 3 validations password requirements');
             return;
         }
 

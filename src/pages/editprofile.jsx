@@ -1,23 +1,19 @@
-import { ArrowLeftIcon, Camera, Loader2Icon } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import React, { useState } from "react";
+
 export default function EditProfile() {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    birthDate: "",
     bio: "",
+    contactNumber: "",
+    address: "",
+    bloodGroup: "",
   });
-  const [imagePreview, setImagePreview] = useState(null);
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -25,119 +21,218 @@ export default function EditProfile() {
       [name]: value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('No token found. Please log in again.');
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      // Simulated API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      // Handle form submission
+      const response = await fetch("http://localhost:8000/api/update-profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message || "Profile updated successfully.");
+      } else {
+        setError(data.message || "Failed to update profile.");
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error updating profile:", error);
+      setError("An error occurred while saving your profile.");
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-8">
-      <button
-        onClick={() => window.history.back()}
-        className="flex items-center space-x-2 mb-8 hover:text-gray-600"
-      >
-        <ArrowLeftIcon className="h-5 w-5" />
-        <span>Back</span>
-      </button>
+    <main className="min-h-screen bg-gray-50 p-4 md:p-8">
+      <div className="max-w-2xl mx-auto">
+        <button
+          onClick={() => window.history.back()}
+          className="flex items-center text-gray-600 hover:text-gray-900 mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5 mr-2" />
+          Back
+        </button>
 
-      <h1 className="text-2xl font-bold mb-8">Edit Profile</h1>
+        <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+            Edit Profile
+          </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="flex flex-col items-center">
-          <div className="relative">
-            <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100">
-              {imagePreview ? (
-                <img
-                  src={imagePreview}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <Camera className="h-8 w-8 text-gray-400" />
-                </div>
-              )}
+          {error && (
+            <div className="bg-red-50 text-red-600 p-4 rounded-md mb-6">
+              {error}
             </div>
-            <label className="absolute bottom-0 right-0 bg-blue-500 p-2 rounded-full cursor-pointer hover:bg-blue-600">
-              <Camera className="h-4 w-4 text-white" />
-              <input
-                type="file"
-                className="hidden"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            </label>
-          </div>
-        </div>
+          )}
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Full Name
-            </label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleInputChange}
-              className="w-full p-2 border rounded-md"
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Personal Information */}
+            <section>
+              <h2 className="text-lg font-medium text-gray-900 mb-4">
+                Personal Information
+              </h2>
+              <div className="space-y-4">
+                <div>
+                  <label
+                    htmlFor="fullName"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              className="w-full p-2 border rounded-md"
-              required
-            />
-          </div>
-        </div>
+                  />
+                </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Bio
-          </label>
-          <textarea
-            name="bio"
-            value={formData.bio}
-            onChange={handleInputChange}
-            rows={4}
-            className="w-full p-2 border rounded-md"
-          />
-        </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
 
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 disabled:opacity-50 flex items-center space-x-2"
-          >
-            {isLoading ? (
-              <>
-                <Loader2Icon className="h-4 w-4 animate-spin" />
-                <span>Saving...</span>
-              </>
-            ) : (
-              <span>Save Changes</span>
-            )}
-          </button>
+                  />
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="date"
+                    name="birthDate"
+                    id="birthDate"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    value={formData.birthDate}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+              </div>
+            </section>
+
+            {/* Contact Details */}
+            <section>
+              <h2 className="text-lg font-medium text-gray-900 mb-4">
+                Contact Details
+              </h2>
+              <div className="space-y-4">
+                <div>
+                  <label
+                    htmlFor="contactNumber"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Contact Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="contactNumber"
+                    name="contactNumber"
+                    value={formData.contactNumber}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="address"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Address
+                  </label>
+                  <textarea
+                    id="address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Medical Information */}
+            <section>
+              <h2 className="text-lg font-medium text-gray-900 mb-4">
+                Medical Information
+              </h2>
+              <div>
+                <label
+                  htmlFor="bloodGroup"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Blood Group
+                </label>
+                <select
+                  id="bloodGroup"
+                  name="bloodGroup"
+                  value={formData.bloodGroup}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                >
+                  <option value="">Select</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                </select>
+              </div>
+            </section>
+
+            <div className="pt-6">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {isLoading ? (
+                  <span className="flex items-center justify-center">
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Updating...
+                  </span>
+                ) : (
+                  "Update Profile"
+                )}
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      </div>
+    </main>
   );
 }

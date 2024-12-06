@@ -17,7 +17,7 @@ export default function Homepage() {
             <h1 className="text-4xl lg:text-5xl font-extrabold font-serif text-navy-900 mb-6 leading-snug">
               Leading the Way<br />in Medical Excellence
             </h1>
-            <button className="bg-sky-100 text-sky-700 hover:bg-sky-200 px-6 py-3 rounded-full shadow-md" onClick={()=>navigate("/services")}>
+            <button className="bg-sky-100 text-sky-700 hover:bg-sky-200 px-6 py-3 rounded-full shadow-md" onClick={() => navigate("/services")}>
               Our Services
             </button>
           </div>
@@ -26,7 +26,7 @@ export default function Homepage() {
 
       {/* Appointment Buttons */}
       <section className="w-full py-4 px-6 flex justify-center md-12">
-      <button className="flex items-center justify-center gap-2 bg-sky-500 text-sky-100 rounded px-48 py-4 font-medium hover:bg-opacity-90 transition-colors">
+        <button className="flex items-center justify-center gap-2 bg-sky-500 text-sky-100 rounded px-48 py-4 font-medium hover:bg-opacity-90 transition-colors">
           <Users className="w-4 h-4" />
           Book an Appointment
         </button>
@@ -137,100 +137,6 @@ export default function Homepage() {
             <img src="home1.png" alt="Doctor consultation" className="w-full h-48 object-cover rounded-lg" />
             <img src="home2.png" alt="Medical staff" className="w-full h-48 object-cover rounded-lg" />
           </div>
-        </div>
-      </div>
-
-      {/* Appointment booking */}
-      <div
-      className="relative w-full max-w-7xl mx-auto px-4 py-12 md:py-16"
-        >
-      <div
-        className="absolute inset-0 z-0 pb-4"
-        style={{
-          backgroundImage: `url('/home3.png')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-      <div className="absolute inset-0 bg-black/50 z-0" />
-      <div
-        className="relative z-10 flex flex-col md:flex-row gap-8 items-center"
-        
-      >
-        <div className="w-full md:w-1/2" >
-          <h2
-            className="text-4xl font-bold text-white mb-4"
-            
-          >
-            Book an Appointment
-          </h2>
-          <p className="text-gray-200 mb-8" >
-            Schedule your visit with our experienced medical professionals. We
-            provide comprehensive care across multiple specialties to ensure you
-            receive the best possible treatment.
-          </p>
-        </div>
-
-          <form className="w-full md:w-1/2 space-y-4 bg-[#1e2756] p-6 rounded-lg" >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4" >
-              <div >
-                <input type="text" placeholder="Name" className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required  />
-              </div>
-              <div >
-                <select className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]">
-                  <option value="">Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div>
-                <input type="email" placeholder="Email" className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required />
-              </div>
-              <div>
-                <input type="tel" placeholder="Phone" className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required />
-              </div>
-              <div>
-                <input type="date" className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required />
-              </div>
-              <div>
-                <select className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]">
-                  <option value="">Select Time</option>
-                  <option value="09:00">09:00 AM</option>
-                  <option value="10:00">10:00 AM</option>
-                  <option value="11:00">11:00 AM</option>
-                  <option value="14:00">02:00 PM</option>
-                  <option value="15:00">03:00 PM</option>
-                  <option value="16:00">04:00 PM</option>
-                </select>
-              </div>
-              <div>
-                <select className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]">
-                  <option value="">Select Doctor</option>
-                  <option value="dr-smith">Dr. Smith</option>
-                  <option value="dr-jones">Dr. Jones</option>
-                  <option value="dr-williams">Dr. Williams</option>
-                </select>
-              </div>
-              <div> 
-                <select className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]">
-                  <option value="">Select Department</option>
-                  <option value="cardiology">Cardiology</option>
-                  <option value="neurology">Neurology</option>
-                  <option value="pediatrics">Pediatrics</option>
-                  <option value="orthopedics">Orthopedics</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <textarea placeholder="Message" rows={4} className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"></textarea>
-            </div>
-
-            <button type="submit" className="w-full bg-blue-500 text-white py-3 px-6 rounded hover:bg-blue-600 transition duration-200">
-              SUBMIT
-            </button>
-          </form>
         </div>
       </div>
     </div>
