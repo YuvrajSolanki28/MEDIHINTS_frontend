@@ -63,11 +63,12 @@ const Navbar = ({ token }) => {
             <button className="hover:text-blue-500" onClick={() => navigate("/doctors")}>Doctors</button>
             <button className="hover:text-blue-500" onClick={() => navigate("/news")}>News</button>
             <button className="hover:text-blue-500" onClick={() => navigate("/contact")}>Contact</button>
+            <button className="hover:text-blue-500" onClick={() => navigate("/laboratory")}>Laboratory</button>
           </div>
 
           {/* User Options (Search, Login, Appointment, Profile) */}
           <div className="hidden lg:flex items-center space-x-4">
-            
+
             {!isLoggedIn && ( // Only show Login button if not logged in
               <button
                 className="px-4 py-2 text-blue-800 bg-white hover:bg-blue-200 rounded-full"
@@ -118,21 +119,46 @@ const Navbar = ({ token }) => {
                     <SettingsIcon className="h-4 w-4 mr-2" />
                     Settings
                   </button>
-                  <button
-                    className="flex w-full items-center text-left px-4 py-2 text-sm hover:bg-gray-100 focus:outline-none text-red-500"
-                    onClick={() => {
-                      localStorage.removeItem("token");
-                      localStorage.removeItem("uid");
-                      setIsLoggedIn(false); // Update the login state
-                      navigate("/login");
-                      handleOptionClick();
+                  {isLoggedIn && ( // Only show "Logout" if logged in
+                    <button
+                      className="flex w-full items-center text-left px-4 py-2 text-sm hover:bg-gray-100 focus:outline-none text-red-500"
+                      onClick={async () => {
+                        try {
+                            const token = localStorage.getItem("token");
+            
+                            if (!token) {
+                                console.error("No token found in local storage.");
+                                return;
+                            }
+            
+                            const response = await fetch("http://localhost:8000/api/logout", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Authorization: token, // Send the token in the Authorization header
+                                },
+                            });
+            
+                            if (response.ok) {
+                                localStorage.removeItem("token");
+                                setIsLoggedIn(false); // Update the login state
+                                navigate("/login");
+                                handleOptionClick();
+                            } else {
+                                console.error("Failed to log out:", await response.text());
+                            }
+                        } catch (error) {
+                            console.error("Error during logout:", error);
+                        }
                     }}
-                  >
-                    <LogOutIcon className="h-4 w-4 mr-2" />
-                    Logout
-                  </button>
+                    >
+                      <LogOutIcon className="h-4 w-4 mr-2" />
+                      Logout
+                    </button>
+                  )}
                 </div>
               )}
+
             </div>
           </div>
         </nav>

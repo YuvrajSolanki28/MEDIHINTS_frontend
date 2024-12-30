@@ -20,13 +20,17 @@ import ChangePassword from './pages/passwordchange';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import ProfilePage from './pages/ProfilePage';
+import LaboratoryDetailsForm from './pages/laboratoryform';
+import Laboratorypage from './pages/laboratory'
+import Admin from './pages/admin';
+import DoctorForm from './pages/doctorform';
 
 const Layout = ({ children }) => {
   const location = useLocation();
 
   // Specify paths where Navbar and Footer should be hidden
-  const hideNavbarFooter = location.pathname === '/passwordchange' || location.pathname === '/editprofile' || location.pathname === '/ForgotPassword' || location.pathname.startsWith('/resetpassword/');
-  const hideFooter = location.pathname.startsWith('/ProfilePage/') || location.pathname === '/settings';
+  const hideNavbarFooter = location.pathname === '/passwordchange' || location.pathname === '/editprofile' || location.pathname === '/ForgotPassword' || location.pathname ==='/admin'|| location.pathname.startsWith('/resetpassword/');
+  const hideFooter = location.pathname.startsWith('/ProfilePage/') || location.pathname === '/settings' ;
   return (
     <>
       {!hideNavbarFooter && <Navbar />}
@@ -61,6 +65,10 @@ root.render(
             <Route path="forgotpassword" element={<ForgotPassword />} />
             <Route path="/resetpassword/:token" element={<ResetPassword />} />
             <Route path="/profilepage/:token" element={<ProfilePage />} />
+            <Route path="/laboratoryform" element={<LaboratoryDetailsForm />} />
+            <Route path="/laboratory" element={<Laboratorypage />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/doctorform" element={<DoctorForm />} />
         </Routes>
       </Layout>
     </Router>

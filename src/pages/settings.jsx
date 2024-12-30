@@ -1,4 +1,4 @@
-import { LockIcon, UserIcon, ShieldIcon, ChevronRightIcon } from "lucide-react";
+import { Lock, User, Shield, TestTube, ChevronRight, Stethoscope } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,6 @@ export default function Settings() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Example: Check if the user is logged in (you can adjust this based on your auth method)
     const user = localStorage.getItem('token'); // Or use your preferred method (e.g., context, Redux)
     if (user) {
       setIsLoggedIn(true);
@@ -29,9 +28,12 @@ export default function Settings() {
           <div className="divide-y">
             {isLoggedIn && (
               <>
-                <button className="w-full flex items-center justify-between p-4 hover:bg-gray-50" onClick={() => navigate("/editprofile")}>
+                <button
+                  className="w-full flex items-center justify-between p-4 hover:bg-gray-50"
+                  onClick={() => navigate("/editprofile")}
+                >
                   <div className="flex items-center space-x-3">
-                    <UserIcon className="h-5 w-5 text-gray-500" />
+                    <User className="h-5 w-5 text-gray-500" />
                     <div className="text-left">
                       <div className="font-medium">Edit Profile</div>
                       <div className="text-sm text-gray-500">
@@ -39,12 +41,15 @@ export default function Settings() {
                       </div>
                     </div>
                   </div>
-                  <ChevronRightIcon className="h-5 w-5 text-gray-400" />
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
                 </button>
 
-                <button className="w-full flex items-center justify-between p-4 hover:bg-gray-50" onClick={() => navigate("/passwordchange")}>
+                <button
+                  className="w-full flex items-center justify-between p-4 hover:bg-gray-50"
+                  onClick={() => navigate("/passwordchange")}
+                >
                   <div className="flex items-center space-x-3">
-                    <LockIcon className="h-5 w-5 text-gray-500" />
+                    <Lock className="h-5 w-5 text-gray-500" />
                     <div className="text-left">
                       <div className="font-medium">Change Password</div>
                       <div className="text-sm text-gray-500">
@@ -52,14 +57,14 @@ export default function Settings() {
                       </div>
                     </div>
                   </div>
-                  <ChevronRightIcon className="h-5 w-5 text-gray-400" />
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
                 </button>
               </>
             )}
 
             <button className="w-full flex items-center justify-between p-4 hover:bg-gray-50">
               <div className="flex items-center space-x-3">
-                <ShieldIcon className="h-5 w-5 text-gray-500" />
+                <Shield className="h-5 w-5 text-gray-500" />
                 <div className="text-left">
                   <div className="font-medium">Privacy Policy</div>
                   <div className="text-sm text-gray-500">
@@ -67,7 +72,40 @@ export default function Settings() {
                   </div>
                 </div>
               </div>
-              <ChevronRightIcon className="h-5 w-5 text-gray-400" />
+              <ChevronRight className="h-5 w-5 text-gray-400" />
+            </button>
+
+            <button
+              className="w-full flex items-center justify-between p-4 hover:bg-gray-50"
+              onClick={() => navigate("/laboratoryform")}
+            >
+              <div className="flex items-center space-x-3">
+                <TestTube className="h-5 w-5 text-gray-500" />
+                <div className="text-left">
+                  <div className="font-medium">Laboratory</div>
+                  <div className="text-sm text-gray-500">
+                    Explore experimental features
+                  </div>
+                </div>
+              </div>
+              <ChevronRight className="h-5 w-5 text-gray-400" />
+            </button>
+
+            {/* Doctor Button */}
+            <button
+              className="w-full flex items-center justify-between p-4 hover:bg-gray-50"
+              onClick={() => navigate("/doctorform")}
+            >
+              <div className="flex items-center space-x-3">
+                <Stethoscope className="h-5 w-5 text-gray-500" />
+                <div className="text-left">
+                  <div className="font-medium">Doctor</div>
+                  <div className="text-sm text-gray-500">
+                    Manage doctor details
+                  </div>
+                </div>
+              </div>
+              <ChevronRight className="h-5 w-5 text-gray-400" />
             </button>
           </div>
         </div>

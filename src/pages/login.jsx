@@ -1,5 +1,6 @@
 import { LockIcon, UserIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,24 +18,45 @@ export default function LoginPage() {
   const notifyError = (message) => toast.error(message);
 
   const verifyCredentials = async () => {
+    if (!email || !password) {
+      notifyError("Email and password are required!");
+      return;
+    }
+
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      // Check if it's an admin login attempt
+      if (email === "medihints@gmail.com") {
+        // Admin login API call
+        const adminResponse = await axios.post(`http://localhost:8000/api/adminlogin`, {
+          email,
+          password,
+        });
+
+        if (adminResponse.status === 200) {
+          notifySuccess("Admin login successful!");
+          navigate("/admin"); // Replace with your admin dashboard route
+          return;
+        } else {
+          notifyError(adminResponse.data.message || "Invalid admin credentials.");
+          return;
+        }
+      }
+
+      // Regular user login API call
+      const response = await axios.post(`http://localhost:8000/api/login`, {
+        email,
+        password,
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         notifySuccess("Verification code sent successfully!");
         setShowVerificationCode(true);
       } else {
-        const data = await response.json();
-        notifyError(data.message || "Failed to send verification code. Please check your email or password.");
+        notifyError(response.data.message || "Failed to send verification code.");
       }
     } catch (error) {
-      console.error("Error:", error);
-      notifyError("An error occurred. Please try again.");
+      notifyError(error.response?.data?.message || "An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
