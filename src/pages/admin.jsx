@@ -3,7 +3,6 @@ import {
     Plus,
     Trash2,
     Edit2,
-    Save,
     X,
     Database,
     Table,
@@ -30,10 +29,9 @@ export default function AdminDashboard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [usersResponse, labResponse, doctorResponse, appointmentResponse] = await Promise.all([
+                const [usersResponse, labResponse, appointmentResponse] = await Promise.all([
                     axios.get('http://localhost:8000/api/user'),
                     axios.get('http://localhost:8000/api/laboratory'),
-                    axios.get('http://localhost:8000/api/doctor'),
                     axios.get('http://localhost:8000/api/appointment')
                 ]);
 
@@ -58,15 +56,6 @@ export default function AdminDashboard() {
                         testTypes: lab.testTypes,
                         location: lab.location,
                         contactNumber: lab.contactNumber,
-                    })),
-                    Doctor: doctorResponse.data.data.map(dr => ({
-                        id: dr._id,
-                        fullName: dr.fullName,
-                        contactNumber: dr.contactNumber,
-                        address: dr.address,
-                        time: dr.time,
-                        department: dr.department,
-                        speciality: dr.speciality
                     })),
                     Appointment: appointmentResponse.data.data.map(appt => ({
                         id: appt._id,
@@ -99,13 +88,11 @@ export default function AdminDashboard() {
         if (!editingId) return;
 
         try {
-            // Make a PUT request to update the data using the current active table
             const response = await axios.put(
                 `http://localhost:8000/api/${activeTable.toLowerCase()}/${editingId}`,
                 editedData
             );
 
-            // Update the state to reflect the changes in the table data
             setTables((prevTables) => ({
                 ...prevTables,
                 [activeTable]: prevTables[activeTable].map((item) =>
@@ -113,7 +100,6 @@ export default function AdminDashboard() {
                 ),
             }));
 
-            // Reset the editing state
             setEditingId(null);
             setEditedData({});
         } catch (error) {
@@ -123,13 +109,24 @@ export default function AdminDashboard() {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8000/api/${activeTable.toLowerCase()}/${id}`);
-            setTables((prevTables) => ({
-                ...prevTables,
-                [activeTable]: prevTables[activeTable].filter((item) => item.id !== id),
-            }));
+            const response = await axios.delete(`http://localhost:8000/api/${activeTable.toLowerCase()}/${id}`);
+            
+            if (response.data.status === "ok") {
+                setTables((prevTables) => ({
+                    ...prevTables,
+                    [activeTable]: prevTables[activeTable].filter((item) => item.id !== id),
+                }));
+            } else {
+                console.error("Failed to delete record:", response.data.message);
+            }
         } catch (error) {
-            console.error('Error deleting record:', error);
+            console.error("Error deleting record:", error);
+        }
+    };
+
+    const confirmDelete = (id) => {
+        if (window.confirm("Are you sure you want to delete this record?")) {
+            handleDelete(id);
         }
     };
 
@@ -204,7 +201,7 @@ export default function AdminDashboard() {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {tables[activeTable]?.filter(record => 
+                                {tables[activeTable]?.filter(record =>
                                     JSON.stringify(record).toLowerCase().includes(searchQuery.toLowerCase())
                                 ).map((record) => (
                                     <tr key={record.id}>
@@ -220,7 +217,7 @@ export default function AdminDashboard() {
                                                     <Edit2 className="h-4 w-4" />
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDelete(record.id)}
+                                                    onClick={() => confirmDelete(record.id)}
                                                     className="text-red-600 hover:text-red-900"
                                                 >
                                                     <Trash2 className="h-4 w-4" />
