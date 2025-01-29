@@ -5,25 +5,29 @@ import './index.css';
 import App from './App';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import AboutUs from './pages/aboutus';
-import Contact from './pages/contact';
-import Doctors from './pages/doctors';
-import News from './pages/news';
-import Services from './pages/services';
-import Login from './pages/login';
-import Signup from './pages/signup';
-import Appointment from './pages/appointment';
-import DoctorProfile from './pages/doctorsprofile';
-import Settings from './pages/settings';
-import EditProfile from './pages/editprofile';
-import ChangePassword from './pages/passwordchange';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
-import ProfilePage from './pages/ProfilePage';
-import LaboratoryDetailsForm from './pages/laboratoryform';
-import Laboratorypage from './pages/laboratory'
-import Admin from './pages/admin';
-import DoctorForm from './pages/doctorform';
+import AboutUs from './pages/User/aboutus';
+import Contact from './pages/User/contact';
+import Doctors from './pages/User/doctors';
+import News from './pages/User/news';
+import Services from './pages/User/services';
+import Login from './pages/User/login';
+import Signup from './pages/User/signup';
+import Appointment from './pages/User/appointment';
+import DoctorProfile from './pages/User/doctorsprofile';
+import Settings from './pages/User/settings';
+import EditProfile from './pages/User/editprofile';
+import ChangePassword from './pages/User/passwordchange';
+import ForgotPassword from './pages/User/ForgotPassword';
+import ResetPassword from './pages/User/ResetPassword';
+import ProfilePage from './pages/User/ProfilePage';
+import LaboratoryDetailsForm from './pages/Laboratory/laboratoryform';
+import Laboratorypage from './pages/Laboratory/laboratory'
+import Admin from './pages/Admin/admin';
+import DoctorForm from './pages/Doctor/doctorform';
+import Doctorlogin from './pages/Doctor/doctor-login';
+import Chooseaccount from './pages/User/choose_account';
+import Laboratorylogin from './pages/Laboratory/laboratory_login';
+// import Appointmentlist from './pages/Doctor/appointments_list';
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -69,6 +73,10 @@ root.render(
             <Route path="/laboratory" element={<Laboratorypage />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/doctorform" element={<DoctorForm />} />
+            <Route path="/doctor-login" element={<Doctorlogin />} />
+            <Route path="/choose_account" element={<Chooseaccount />} />
+            <Route path="/laboratory_login" element={<Laboratorylogin />} />
+            {/* <Route path="/appointments_list" element={<Appointmentlist />} /> */}
         </Routes>
       </Layout>
     </Router>
