@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Home from './pages/User/Homepage';
 import AboutUs from './pages/User/aboutus';
 import Contact from './pages/User/contact';
 import Doctors from './pages/User/doctors';
@@ -27,14 +28,18 @@ import DoctorForm from './pages/Doctor/doctorform';
 import Doctorlogin from './pages/Doctor/doctor-login';
 import Chooseaccount from './pages/User/choose_account';
 import Laboratorylogin from './pages/Laboratory/laboratory_login';
-// import Appointmentlist from './pages/Doctor/appointments_list';
+import AppointmentList from './pages/Doctor/appointments_list';
+import DoctorSettingd from './pages/Doctor/doctor_settings';
+import DoctorChangePassword from './pages/Doctor/doctor_passwordchange';
+import DoctorForgotPassword from './pages/Doctor/doctor_ForgotPassword';
+import DoctorResetPassword from './pages/Doctor/doctor_resetpassword';
 
 const Layout = ({ children }) => {
   const location = useLocation();
 
   // Specify paths where Navbar and Footer should be hidden
-  const hideNavbarFooter = location.pathname === '/passwordchange' || location.pathname === '/editprofile' || location.pathname === '/ForgotPassword' || location.pathname ==='/admin'|| location.pathname.startsWith('/resetpassword/');
-  const hideFooter = location.pathname.startsWith('/ProfilePage/') || location.pathname === '/settings' ;
+  const hideNavbarFooter = location.pathname === '/passwordchange' || location.pathname === '/doctor_passwordchange' || location.pathname === '/editprofile' || location.pathname === '/ForgotPassword' || location.pathname === '/doctor_ForgotPassword' || location.pathname ==='/admin' || location.pathname.startsWith('/resetpassword/') || location.pathname.startsWith('/doctor_resetpassword/')  ;
+  const hideFooter = location.pathname.startsWith('/ProfilePage/') || location.pathname === '/settings' || location.pathname === '/doctor_settings';
   return (
     <>
       {!hideNavbarFooter && <Navbar />}
@@ -54,6 +59,7 @@ root.render(
       <Layout>
         <Routes>
             <Route index element={<App />} />
+            <Route path='Homepage' element={<Home />} />
             <Route path='aboutus' element={<AboutUs />} />
             <Route path='contact' element={<Contact />} />
             <Route path='doctors' element={<Doctors />} />
@@ -76,7 +82,11 @@ root.render(
             <Route path="/doctor-login" element={<Doctorlogin />} />
             <Route path="/choose_account" element={<Chooseaccount />} />
             <Route path="/laboratory_login" element={<Laboratorylogin />} />
-            {/* <Route path="/appointments_list" element={<Appointmentlist />} /> */}
+            <Route path="/appointments_list" element={<AppointmentList />} />
+            <Route path="/doctor_settings" element={<DoctorSettingd />} />
+            <Route path="/doctor_passwordchange" element={<DoctorChangePassword />} />
+            <Route path="/doctor_ForgotPassword" element={<DoctorForgotPassword />} />
+            <Route path="/doctor_resetpassword/doctor/:token" element={<DoctorResetPassword />} />
         </Routes>
       </Layout>
     </Router>

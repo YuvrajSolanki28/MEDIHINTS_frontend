@@ -16,7 +16,7 @@ export default function Settings() {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    const endpoint = "http://localhost:8000/api/logout";
+    const endpoint = "http://localhost:8000/api/doctor/logout";
 
     try {
       const response = await fetch(endpoint, {
@@ -29,9 +29,9 @@ export default function Settings() {
       }
 
       localStorage.removeItem("token");
-      localStorage.removeItem("patient");
+      localStorage.removeItem("doctor");
       setIsLoggedIn(false);
-      navigate("/login");
+      navigate("/doctor-login");
       window.location.reload();
     } catch (error) {
       console.error("Logout error:", error);
@@ -90,7 +90,7 @@ export default function Settings() {
 
                 <motion.button
                   className="flex items-center justify-between w-full p-4 hover:bg-gray-50"
-                  onClick={() => navigate("/passwordchange")}
+                  onClick={() => navigate("/doctor_passwordchange")}
                   variants={itemVariants}
                   whileHover={{ scale: 1.05 }}
                 >

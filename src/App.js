@@ -1,5 +1,5 @@
 import React from 'react'
-import Homepage from './components/Homepage';
+import Landingpage from './components/landing_page';
 
 
 
@@ -7,7 +7,7 @@ import Homepage from './components/Homepage';
 function App() {
   return (
     <div>
-        <Homepage />
+        <Landingpage />
     </div>
   );
 }

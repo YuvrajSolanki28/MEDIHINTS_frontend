@@ -42,8 +42,6 @@ export default function SignupPage() {
         setValidations(newValidations);
     }, [formData.password]);
 
-
-
     const ValidationItem = ({ satisfied, text }) => (
         <div className="flex items-center space-x-2">
             {satisfied ? (
@@ -73,7 +71,7 @@ export default function SignupPage() {
         setError("");
 
         if (!isPasswordValid) {
-            toast.error("Please 3 validations password requirements");
+            toast.error("Please meet at least 3 password requirements");
             return;
         }
         if (formData.password !== formData.confirmPassword) {
@@ -204,7 +202,6 @@ export default function SignupPage() {
                             />
                         </div>
 
-
                         {/* Gender */}
                         <div className="relative">
                             <select
@@ -272,26 +269,36 @@ export default function SignupPage() {
 
                         {/* Password Validations */}
                         <div className="mt-2 space-y-1">
-                            <ValidationItem
-                                satisfied={validations.minLength}
-                                text="At least 8 characters"
-                            />
-                            <ValidationItem
-                                satisfied={validations.hasUpper}
-                                text="At least 1 uppercase letter"
-                            />
-                            <ValidationItem
-                                satisfied={validations.hasLower}
-                                text="At least 1 lowercase letter"
-                            />
-                            <ValidationItem
-                                satisfied={validations.hasNumber}
-                                text="At least 1 number"
-                            />
-                            <ValidationItem
-                                satisfied={validations.hasSpecial}
-                                text="At least 1 special character"
-                            />
+                            {validations.minLength && (
+                                <ValidationItem
+                                    satisfied={validations.minLength}
+                                    text="At least 8 characters"
+                                />
+                            )}
+                            {validations.hasUpper && (
+                                <ValidationItem
+                                    satisfied={validations.hasUpper}
+                                    text="At least 1 uppercase letter"
+                                />
+                            )}
+                            {validations.hasLower && (
+                                <ValidationItem
+                                    satisfied={validations.hasLower}
+                                    text="At least 1 lowercase letter"
+                                />
+                            )}
+                            {validations.hasNumber && (
+                                <ValidationItem
+                                    satisfied={validations.hasNumber}
+                                    text="At least 1 number"
+                                />
+                            )}
+                            {validations.hasSpecial && (
+                                <ValidationItem
+                                    satisfied={validations.hasSpecial}
+                                    text="At least 1 special character"
+                                />
+                            )}
                         </div>
 
                         {/* Confirm Password */}
