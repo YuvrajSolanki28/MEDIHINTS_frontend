@@ -1,5 +1,5 @@
-import { UserCircle, Mail, Phone, MapPin, Calendar, Clock, Activity } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { UserCircle, Mail, Phone, MapPin, Calendar, Clock, Activity } from "lucide-react";
 import { motion } from "framer-motion"; // Import Framer Motion
 
 const ProfilePage = () => {

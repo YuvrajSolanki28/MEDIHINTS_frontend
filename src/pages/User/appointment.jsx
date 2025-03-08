@@ -51,17 +51,17 @@ export default function AppointmentBooking() {
                 <img
                     src="/appointment1.png"
                     alt="Medical team"
-                    className="w-full h-full object-cover brightness-50"
+                    className="object-cover w-full h-full brightness-50"
                 />
-                <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center px-8">
-                    <h1 className="text-5xl text-white font-serif font-bold">Book Appointment</h1>
+                <div className="absolute top-0 left-0 flex flex-col justify-center w-full h-full px-8">
+                    <h1 className="font-serif text-5xl font-bold text-white">Book Appointment</h1>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 gap-8 px-4 py-12 mx-auto max-w-7xl lg:grid-cols-2">
                 <div>
-                    <h2 className="text-3xl font-bold text-gray-900 mb-4">Book an Appointment</h2>
-                    <p className="text-gray-600 mb-8">
+                    <h2 className="mb-4 text-3xl font-bold text-gray-900">Book an Appointment</h2>
+                    <p className="mb-8 text-gray-600">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat
                         scelerisque tortor ornare ornare. Convallis felis vitae tortor augue. Velit
                         nascetur proin massa in. Consequat faucibus porttitor enim et.
@@ -71,7 +71,7 @@ export default function AppointmentBooking() {
                         className="space-y-4 bg-[#1e2756] rounded-lg p-6"
                         onSubmit={handleSubmit}
                     >
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div>
                                 <input
                                     type="text"
@@ -190,7 +190,7 @@ export default function AppointmentBooking() {
 
                         <button
                             type="submit"
-                            className="w-full bg-blue-500 text-white py-3 px-6 rounded hover:bg-blue-600 transition duration-200"
+                            className="w-full px-6 py-3 text-white transition duration-200 bg-blue-500 rounded hover:bg-blue-600"
                         >
                             SUBMIT
                         </button>
@@ -198,7 +198,7 @@ export default function AppointmentBooking() {
                 </div>
 
                 <div className="bg-[#1e2875] text-white p-8 rounded-lg">
-                    <h2 className="text-3xl font-bold mb-8">Schedule hours</h2>
+                    <h2 className="mb-8 text-3xl font-bold">Schedule hours</h2>
                     <div className="space-y-4">
                         {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day, index) => (
                             <div className="flex justify-between" key={index}>
@@ -208,9 +208,9 @@ export default function AppointmentBooking() {
                             </div>
                         ))}
                     </div>
-                    <div className="mt-12 pt-8 border-t border-white/20">
+                    <div className="pt-8 mt-12 border-t border-white/20">
                         <div className="flex items-center gap-4">
-                            <PhoneIcon className="h-8 w-8" />
+                            <PhoneIcon className="w-8 h-8" />
                             <div>
                                 <div className="text-lg font-semibold">Emergency</div>
                                 <div className="text-xl">(237) 681-812-255</div>

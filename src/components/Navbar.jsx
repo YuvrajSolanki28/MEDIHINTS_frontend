@@ -168,7 +168,7 @@ const Navbar = ({ token }) => {
                         whileTap={{ scale: 0.95 }}
                         className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 focus:outline-none"
                         onClick={() => {
-                          navigate(`/DoctorProfilePage/${token}`);
+                          navigate(`/Doctor_profile/${token}`);
                           setIsProfileOpen(false);
                         }}
                       >

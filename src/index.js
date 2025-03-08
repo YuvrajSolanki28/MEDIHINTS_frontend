@@ -33,6 +33,9 @@ import DoctorSettingd from './pages/Doctor/doctor_settings';
 import DoctorChangePassword from './pages/Doctor/doctor_passwordchange';
 import DoctorForgotPassword from './pages/Doctor/doctor_ForgotPassword';
 import DoctorResetPassword from './pages/Doctor/doctor_resetpassword';
+import DoctorProfiles from './pages/Doctor/doctor_profile';
+import BloodBank from './pages/User/bloodbank';
+import ComingSoon from './pages/User/coming';
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -87,6 +90,9 @@ root.render(
             <Route path="/doctor_passwordchange" element={<DoctorChangePassword />} />
             <Route path="/doctor_ForgotPassword" element={<DoctorForgotPassword />} />
             <Route path="/doctor_resetpassword/doctor/:token" element={<DoctorResetPassword />} />
+            <Route path="/doctor_profile/:token" element={<DoctorProfiles />} />
+            <Route path="/bloodbank" element={<BloodBank />} />
+            <Route path="/coming" element={<ComingSoon />} />
         </Routes>
       </Layout>
     </Router>
