@@ -66,45 +66,76 @@ export default function SignupPage() {
     };
 
     const isPasswordValid = Object.values(validations).filter(Boolean).length >= 3;
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
+    // ...existing code...
 
-        if (!isPasswordValid) {
-            toast.error("Please meet at least 3 password requirements");
-            return;
-        }
-        if (formData.password !== formData.confirmPassword) {
-            toast.error("Passwords do not match");
-            return;
-        }
-        if (!formData.termsAccepted) {
-            toast.error("You must accept the terms and conditions");
-            return;
-        }
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-        try {
-            const response = await fetch("http://localhost:8000/api/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
+    // Input validation
+    if (!/^[a-zA-Z\s]+$/.test(formData.fullName.length < 2 || formData.fullName.length > 50)) {
+        toast.error("Full Name must be between 2 to 10 characters");
+        return;
+    }
+    if (!formData.email) {
+        toast.error("Email is required");
+        return;
+    }
+    if (!/^\d{10}$/.test(formData.contactNumber)) {
+        toast.error("Contact Number must be exactly 10 digits");
+        return;
+    }
+    if (formData.address.length < 10 || formData.address.length > 100) {
+        toast.error("Address is required");
+        return;
+    }
+    if (!formData.birthDate) {
+        toast.error("Birth Date is required");
+        return;
+    }
+    if (!formData.gender) {
+        toast.error("Gender is required");
+        return;
+    }
+    if (!formData.bloodGroup) {
+        toast.error("Blood Group is required");
+        return;
+    }
+    if (!isPasswordValid) {
+        toast.error("Please meet at least 3 password requirements");
+        return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+        toast.error("Passwords do not match");
+        return;
+    }
+    if (!formData.termsAccepted) {
+        toast.error("You must accept the terms and conditions");
+        return;
+    }
 
-            const data = await response.json();
+    try {
+        const response = await fetch("http://localhost:8000/api/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        });
 
-            if (response.ok) {
-                toast.success("User registered successfully!");
-                navigate("/login"); // Redirect to login on successful signup
-            } else {
-                toast.error(data.error || "Registration failed");
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            toast.error("An error occurred while signing up");
+        const data = await response.json();
+
+        if (response.ok) {
+            toast.success("User registered successfully!");
+            navigate("/login"); // Redirect to login on successful signup
+        } else {
+            toast.error(data.error || "Registration failed");
         }
-    };
+    } catch (error) {
+        console.error("Error:", error);
+        toast.error("An error occurred while signing up");
+    }
+};
 
     return (
         <main className="min-h-screen w-full flex flex-col md:flex-row">

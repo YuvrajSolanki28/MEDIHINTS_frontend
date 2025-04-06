@@ -1,5 +1,5 @@
-import { LockIcon, UserIcon, EyeIcon, EyeOffIcon, UserCircleIcon, LucideMapPin, Phone } from "lucide-react";
-import React, { useState } from "react";
+import { LockIcon, UserIcon, EyeIcon, EyeOffIcon, UserCircleIcon,CheckIcon, XIcon ,LucideMapPin, Phone } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import { motion } from "framer-motion";
@@ -19,6 +19,41 @@ export default function LaboratoryForm() {
         confirmPassword: "",
         termsAccepted: false,
     });
+    const [validations, setValidations] = useState({
+        minLength: false,
+        hasUpper: false,
+        hasLower: false,
+        hasNumber: false,
+        hasSpecial: false,
+    });
+
+    useEffect(() => {
+        const password = formData.password;
+        const newValidations = {
+            minLength: password.length >= 8,
+            hasUpper: /[A-Z]/.test(password),
+            hasLower: /[a-z]/.test(password),
+            hasNumber: /[0-9]/.test(password),
+            hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+        };
+
+        setValidations(newValidations);
+    }, [formData.password]);
+
+    const ValidationItem = ({ satisfied, text }) => (
+        <div className="flex items-center space-x-2">
+            {satisfied ? (
+                <CheckIcon className="h-4 w-4 text-green-500" />
+            ) : (
+                <XIcon className="h-4 w-4 text-red-500" />
+            )}
+            <span
+                className={`text-sm ${satisfied ? "text-green-500" : "text-red-500"}`}
+            >
+                {text}
+            </span>
+        </div>
+    );
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -30,7 +65,31 @@ export default function LaboratoryForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+         // Input validation
+         if (!/^[a-zA-Z\s]+$/.test(formData.fullName.length < 2 || formData.fullName.length > 50)) {
+        toast.error("Full Name must be between 2 to 10 characters");
+        return;
+        }
+        if (!formData.email) {
+        toast.error("Email is required");
+        return;
+        }
+        if (!/^\d{10}$/.test(formData.contactNumber)) {
+        toast.error("Contact Number must be exactly 10 digits");
+        return;
+        }
+        if (formData.labLicenseNumber.length < 1 || formData.labLicenseNumber.length > 11) {
+            toast.error("license Number is required");
+            return;
+        }
+        if (formData.location.length < 10 || formData.location.length > 100) {
+        toast.error("Address is required");
+        return;
+        }
+        if (!formData.isPasswordValid) {
+        toast.error("Please meet at least 3 password requirements");
+        return;
+        }
         if (formData.password !== formData.confirmPassword) {
             toast.error("Passwords do not match");
             return;
@@ -225,6 +284,40 @@ export default function LaboratoryForm() {
                                 )}
                             </button>
                         </motion.div>
+
+                         {/* Password Validations */}
+                         <div className="mt-2 space-y-1">
+                            {validations.minLength && (
+                                <ValidationItem
+                                    satisfied={validations.minLength}
+                                    text="At least 8 characters"
+                                />
+                            )}
+                            {validations.hasUpper && (
+                                <ValidationItem
+                                    satisfied={validations.hasUpper}
+                                    text="At least 1 uppercase letter"
+                                />
+                            )}
+                            {validations.hasLower && (
+                                <ValidationItem
+                                    satisfied={validations.hasLower}
+                                    text="At least 1 lowercase letter"
+                                />
+                            )}
+                            {validations.hasNumber && (
+                                <ValidationItem
+                                    satisfied={validations.hasNumber}
+                                    text="At least 1 number"
+                                />
+                            )}
+                            {validations.hasSpecial && (
+                                <ValidationItem
+                                    satisfied={validations.hasSpecial}
+                                    text="At least 1 special character"
+                                />
+                            )}
+                        </div>
 
                         {/* Confirm Password */}
                         <motion.div

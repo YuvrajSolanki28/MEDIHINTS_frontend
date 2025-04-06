@@ -68,7 +68,7 @@ const DoctorProfiles = () => {
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             className="object-cover w-48 h-48 rounded-full"
-          />
+          >{doctor.img}</motion.img>
           <div>
             <motion.h1
               initial={{ x: -20, opacity: 0 }}
