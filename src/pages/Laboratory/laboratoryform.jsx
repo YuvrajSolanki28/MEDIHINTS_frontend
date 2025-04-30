@@ -1,9 +1,8 @@
-import { LockIcon, UserIcon, EyeIcon, EyeOffIcon, UserCircleIcon,CheckIcon, XIcon ,LucideMapPin, Phone } from "lucide-react";
+import { LockIcon, UserIcon, EyeIcon, EyeOffIcon, UserCircleIcon, CheckIcon, XIcon, Phone, MapPin } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import { motion } from "framer-motion";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function LaboratoryForm() {
     const [showPassword, setShowPassword] = useState(false);
@@ -13,8 +12,8 @@ export default function LaboratoryForm() {
         labName: "",
         email: "",
         contactNumber: "",
-        labLicenseNumber: "",
-        location: "",
+        registrationNumber: "",
+        address: "",
         password: "",
         confirmPassword: "",
         termsAccepted: false,
@@ -43,9 +42,9 @@ export default function LaboratoryForm() {
     const ValidationItem = ({ satisfied, text }) => (
         <div className="flex items-center space-x-2">
             {satisfied ? (
-                <CheckIcon className="h-4 w-4 text-green-500" />
+                <CheckIcon className="w-4 h-4 text-green-500" />
             ) : (
-                <XIcon className="h-4 w-4 text-red-500" />
+                <XIcon className="w-4 h-4 text-red-500" />
             )}
             <span
                 className={`text-sm ${satisfied ? "text-green-500" : "text-red-500"}`}
@@ -65,35 +64,44 @@ export default function LaboratoryForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-         // Input validation
-         if (!/^[a-zA-Z\s]+$/.test(formData.fullName.length < 2 || formData.fullName.length > 50)) {
-        toast.error("Full Name must be between 2 to 10 characters");
-        return;
-        }
-        if (!formData.email) {
-        toast.error("Email is required");
-        return;
-        }
-        if (!/^\d{10}$/.test(formData.contactNumber)) {
-        toast.error("Contact Number must be exactly 10 digits");
-        return;
-        }
-        if (formData.labLicenseNumber.length < 1 || formData.labLicenseNumber.length > 11) {
-            toast.error("license Number is required");
+
+        if (formData.labName.length < 2 || formData.labName.length > 50) {
+            toast.error("Laboratory Name must be between 2 and 50 characters");
             return;
         }
-        if (formData.location.length < 10 || formData.location.length > 100) {
-        toast.error("Address is required");
-        return;
+
+        if (!formData.email) {
+            toast.error("Email is required");
+            return;
         }
-        if (!formData.isPasswordValid) {
-        toast.error("Please meet at least 3 password requirements");
-        return;
+
+        if (!/^\d{10}$/.test(formData.contactNumber)) {
+            toast.error("Contact Number must be exactly 10 digits");
+            return;
         }
+
+        if (formData.registrationNumber.length < 1 || formData.registrationNumber.length > 11) {
+            toast.error("Registration Number is required and must be under 11 characters");
+            return;
+        }
+
+        if (formData.address.length < 10 || formData.address.length > 100) {
+            toast.error("Address must be between 10 and 100 characters");
+            return;
+        }
+
+        // Minimum 3 password validations should be satisfied
+        const validCount = Object.values(validations).filter(Boolean).length;
+        if (validCount < 3) {
+            toast.error("Please meet at least 3 password requirements");
+            return;
+        }
+
         if (formData.password !== formData.confirmPassword) {
             toast.error("Passwords do not match");
             return;
         }
+
         if (!formData.termsAccepted) {
             toast.error("You must accept the terms and conditions");
             return;
@@ -112,7 +120,7 @@ export default function LaboratoryForm() {
 
             if (response.ok) {
                 toast.success("Laboratory registered successfully!");
-                navigate("/laboratory-login"); // Redirect to laboratory login on successful signup
+                navigate("/laboratory-login");
             } else {
                 toast.error(data.error || "Registration failed");
             }
@@ -121,6 +129,7 @@ export default function LaboratoryForm() {
             toast.error("An error occurred while signing up");
         }
     };
+
 
     return (
         <main className="flex flex-col w-full min-h-screen md:flex-row">
@@ -217,24 +226,27 @@ export default function LaboratoryForm() {
                             />
                         </motion.div>
 
-                        {/* License Number */}
+                        {/* Registration Number */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 1.0 }}
                             className="relative"
                         >
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <LockIcon className="w-5 h-5 text-gray-400" />
+                            </div>
                             <input
                                 type="text"
-                                name="labLicenseNumber"
-                                className="block w-full py-2 pl-3 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Laboratory License Number"
-                                value={formData.labLicenseNumber}
+                                name="registrationNumber"
+                                className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Laboratory Registration Number"
+                                value={formData.registrationNumber}
                                 onChange={handleChange}
                             />
                         </motion.div>
 
-                        {/* Location */}
+                        {/* Address */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -242,14 +254,14 @@ export default function LaboratoryForm() {
                             className="relative"
                         >
                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <LucideMapPin className="w-5 h-5 text-gray-400" />
+                                <MapPin className="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                                 type="text"
-                                name="location"
+                                name="address"
                                 className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Location"
-                                value={formData.location}
+                                placeholder="Address"
+                                value={formData.address}
                                 onChange={handleChange}
                             />
                         </motion.div>
@@ -285,38 +297,28 @@ export default function LaboratoryForm() {
                             </button>
                         </motion.div>
 
-                         {/* Password Validations */}
-                         <div className="mt-2 space-y-1">
-                            {validations.minLength && (
-                                <ValidationItem
-                                    satisfied={validations.minLength}
-                                    text="At least 8 characters"
-                                />
-                            )}
-                            {validations.hasUpper && (
-                                <ValidationItem
-                                    satisfied={validations.hasUpper}
-                                    text="At least 1 uppercase letter"
-                                />
-                            )}
-                            {validations.hasLower && (
-                                <ValidationItem
-                                    satisfied={validations.hasLower}
-                                    text="At least 1 lowercase letter"
-                                />
-                            )}
-                            {validations.hasNumber && (
-                                <ValidationItem
-                                    satisfied={validations.hasNumber}
-                                    text="At least 1 number"
-                                />
-                            )}
-                            {validations.hasSpecial && (
-                                <ValidationItem
-                                    satisfied={validations.hasSpecial}
-                                    text="At least 1 special character"
-                                />
-                            )}
+                        {/* Password Validations */}
+                        <div className="mt-2 space-y-1">
+                            <ValidationItem
+                                satisfied={validations.minLength}
+                                text="At least 8 characters"
+                            />
+                            <ValidationItem
+                                satisfied={validations.hasUpper}
+                                text="At least 1 uppercase letter"
+                            />
+                            <ValidationItem
+                                satisfied={validations.hasLower}
+                                text="At least 1 lowercase letter"
+                            />
+                            <ValidationItem
+                                satisfied={validations.hasNumber}
+                                text="At least 1 number"
+                            />
+                            <ValidationItem
+                                satisfied={validations.hasSpecial}
+                                text="At least 1 special character"
+                            />
                         </div>
 
                         {/* Confirm Password */}
@@ -392,12 +394,13 @@ export default function LaboratoryForm() {
                         >
                             <span className="text-sm text-gray-600">
                                 Already have an account?{" "}
-                                <li
-                                    className="text-blue-600 cursor-pointer hover:text-blue-500"
-                                    onClick={() => navigate("/laboratory_login")}
+                                <button
+                                    type="button"
+                                    className="p-0 text-blue-600 bg-transparent border-none cursor-pointer hover:text-blue-500"
+                                    onClick={() => navigate("/laboratory-login")}
                                 >
                                     Sign in here
-                                </li>
+                                </button>
                             </span>
                         </motion.div>
                     </form>

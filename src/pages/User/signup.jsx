@@ -45,9 +45,9 @@ export default function SignupPage() {
     const ValidationItem = ({ satisfied, text }) => (
         <div className="flex items-center space-x-2">
             {satisfied ? (
-                <CheckIcon className="h-4 w-4 text-green-500" />
+                <CheckIcon className="w-4 h-4 text-green-500" />
             ) : (
-                <XIcon className="h-4 w-4 text-red-500" />
+                <XIcon className="w-4 h-4 text-red-500" />
             )}
             <span
                 className={`text-sm ${satisfied ? "text-green-500" : "text-red-500"}`}
@@ -93,6 +93,13 @@ const handleSubmit = async (e) => {
         toast.error("Birth Date is required");
         return;
     }
+    const selectedDate = new Date(formData.birthDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+     if (selectedDate > today) {
+         toast.error("Birth Date cannot be in the future");
+         return;
+    }
     if (!formData.gender) {
         toast.error("Gender is required");
         return;
@@ -115,7 +122,7 @@ const handleSubmit = async (e) => {
     }
 
     try {
-        const response = await fetch("http://localhost:8000/api/signup", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/signup`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -138,39 +145,39 @@ const handleSubmit = async (e) => {
 };
 
     return (
-        <main className="min-h-screen w-full flex flex-col md:flex-row">
+        <main className="flex flex-col w-full min-h-screen md:flex-row">
             <Toaster position="top-right" reverseOrder={false} />
             <div className="w-full md:w-1/2 min-h-[300px] md:min-h-screen relative">
                 <img
                     src="/signup.png"
-                    className="w-full h-full object-cover absolute inset-0"
+                    className="absolute inset-0 object-cover w-full h-full"
                     alt="Hospital"
                 />
-                <div className="absolute inset-0 bg-blue-900/70 flex items-center justify-center">
-                    <div className="text-center text-white p-8">
-                        <h1 className="text-4xl font-bold mb-4">MediHints</h1>
+                <div className="absolute inset-0 flex items-center justify-center bg-blue-900/70">
+                    <div className="p-8 text-center text-white">
+                        <h1 className="mb-4 text-4xl font-bold">MediHints</h1>
                         <p className="text-xl">Your Trusted Healthcare Partner</p>
                     </div>
                 </div>
             </div>
 
-            <div className="w-full md:w-1/2 flex items-center justify-center p-8 bg-gray-50">
-                <div className="max-w-md w-full">
-                    <div className="text-center mb-8">
+            <div className="flex items-center justify-center w-full p-8 md:w-1/2 bg-gray-50">
+                <div className="w-full max-w-md">
+                    <div className="mb-8 text-center">
                         <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
-                        <p className="text-gray-600 mt-2">Join MediHints Plus today</p>
+                        <p className="mt-2 text-gray-600">Join MediHints Plus today</p>
                     </div>
 
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         {/* Full Name */}
                         <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <UserCircleIcon className="h-5 w-5 text-gray-400" />
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <UserCircleIcon className="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                                 type="text"
                                 name="fullName"
-                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Full Name"
                                 value={formData.fullName}
                                 onChange={handleChange}
@@ -179,13 +186,13 @@ const handleSubmit = async (e) => {
 
                         {/* Email */}
                         <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <UserIcon className="h-5 w-5 text-gray-400" />
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <UserIcon className="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                                 type="email"
                                 name="email"
-                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Email address"
                                 value={formData.email}
                                 onChange={handleChange}
@@ -194,13 +201,13 @@ const handleSubmit = async (e) => {
 
                         {/* Contact Number */}
                         <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <Phone className="h-5 w-5 text-gray-400" />
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <Phone className="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                                 type="tel"
                                 name="contactNumber"
-                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Contact Number"
                                 value={formData.contactNumber}
                                 onChange={handleChange}
@@ -209,13 +216,13 @@ const handleSubmit = async (e) => {
 
                         {/* Address */}
                         <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <LucideMapPin className="h-5 w-5 text-gray-400" />
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <LucideMapPin className="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                                 type="text"
                                 name="address"
-                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Address"
                                 value={formData.address}
                                 onChange={handleChange}
@@ -227,7 +234,7 @@ const handleSubmit = async (e) => {
                             <input
                                 type="date"
                                 name="birthDate"
-                                className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full py-2 pl-3 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 value={formData.birthDate}
                                 onChange={handleChange}
                             />
@@ -237,7 +244,7 @@ const handleSubmit = async (e) => {
                         <div className="relative">
                             <select
                                 name="gender"
-                                className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full py-2 pl-3 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 value={formData.gender}
                                 onChange={handleChange}
                             >
@@ -254,7 +261,7 @@ const handleSubmit = async (e) => {
                         <div className="relative">
                             <select
                                 name="bloodGroup"
-                                className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full py-2 pl-3 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 value={formData.bloodGroup}
                                 onChange={handleChange}
                             >
@@ -274,26 +281,26 @@ const handleSubmit = async (e) => {
 
                         {/* Password */}
                         <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <LockIcon className="h-5 w-5 text-gray-400" />
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <LockIcon className="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                                 type={showPassword ? "text" : "password"}
                                 name="password"
-                                className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Password"
                                 value={formData.password}
                                 onChange={handleChange}
                             />
                             <button
                                 type="button"
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                className="absolute inset-y-0 right-0 flex items-center pr-3"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? (
-                                    <EyeOffIcon className="h-5 w-5 text-gray-400" />
+                                    <EyeOffIcon className="w-5 h-5 text-gray-400" />
                                 ) : (
-                                    <EyeIcon className="h-5 w-5 text-gray-400" />
+                                    <EyeIcon className="w-5 h-5 text-gray-400" />
                                 )}
                             </button>
                         </div>
@@ -334,41 +341,41 @@ const handleSubmit = async (e) => {
 
                         {/* Confirm Password */}
                         <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <LockIcon className="h-5 w-5 text-gray-400" />
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <LockIcon className="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                                 type={showConfirmPassword ? "text" : "password"}
                                 name="confirmPassword"
-                                className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Confirm Password"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
                             />
                             <button
                                 type="button"
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                className="absolute inset-y-0 right-0 flex items-center pr-3"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             >
                                 {showConfirmPassword ? (
-                                    <EyeOffIcon className="h-5 w-5 text-gray-400" />
+                                    <EyeOffIcon className="w-5 h-5 text-gray-400" />
                                 ) : (
-                                    <EyeIcon className="h-5 w-5 text-gray-400" />
+                                    <EyeIcon className="w-5 h-5 text-gray-400" />
                                 )}
                             </button>
                         </div>
-                        {error && <div className="text-red-500 text-sm">{error}</div>}
+                        {error && <div className="text-sm text-red-500">{error}</div>}
 
                         {/* Terms and Conditions */}
                         <div className="flex items-center">
                             <input
                                 type="checkbox"
                                 name="termsAccepted"
-                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                                 checked={formData.termsAccepted}
                                 onChange={handleChange}
                             />
-                            <label className="ml-2 block text-sm text-gray-900">
+                            <label className="block ml-2 text-sm text-gray-900">
                                 I agree to the Terms and Conditions
                             </label>
                         </div>
@@ -376,7 +383,7 @@ const handleSubmit = async (e) => {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                         >
                             Sign up
                         </button>
@@ -386,7 +393,7 @@ const handleSubmit = async (e) => {
                             <span className="text-sm text-gray-600">
                                 Already have an account?{" "}
                                 <li
-                                    className="text-blue-600 hover:text-blue-500 cursor-pointer"
+                                    className="text-blue-600 cursor-pointer hover:text-blue-500"
                                     onClick={() => navigate("/login")}
                                 >
                                     Sign in here

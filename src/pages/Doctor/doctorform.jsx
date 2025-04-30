@@ -97,10 +97,7 @@ import {
         return;
       }
   
-      if (
-        formData.licenseNumber.length < 1 ||
-        formData.licenseNumber.length > 11
-      ) {
+      if (formData.licenseNumber.length < 1 || formData.licenseNumber.length > 11 ) {
         toast.error("License number must be 1–11 characters");
         return;
       }
@@ -109,7 +106,11 @@ import {
         toast.error("Years of experience is required");
         return;
       }
-  
+      
+      if (Number(formData.yearsOfExperience) < 0) {
+        toast.error("Years of experience cannot be negative");
+        return;
+      }
       if (
         formData.clinicAddress.length < 10 ||
         formData.clinicAddress.length > 100
@@ -172,40 +173,40 @@ import {
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Full Name */}
               <div className="relative">
-                <UserCircleIcon className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                <UserCircleIcon className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
                 <input
                   type="text"
                   name="fullName"
                   placeholder="Full Name"
                   value={formData.fullName}
                   onChange={handleChange}
-                  className="pl-10 w-full py-2 border rounded-md"
+                  className="w-full py-2 pl-10 border rounded-md"
                 />
               </div>
   
               {/* Email */}
               <div className="relative">
-                <UserIcon className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                <UserIcon className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
                 <input
                   type="email"
                   name="email"
                   placeholder="Email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="pl-10 w-full py-2 border rounded-md"
+                  className="w-full py-2 pl-10 border rounded-md"
                 />
               </div>
   
               {/* Contact */}
               <div className="relative">
-                <Phone className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                <Phone className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
                 <input
                   type="tel"
                   name="contactNumber"
                   placeholder="Contact Number"
                   value={formData.contactNumber}
                   onChange={handleChange}
-                  className="pl-10 w-full py-2 border rounded-md"
+                  className="w-full py-2 pl-10 border rounded-md"
                 />
               </div>
   
@@ -241,27 +242,27 @@ import {
   
               {/* Address */}
               <div className="relative">
-                <LucideMapPin className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                <LucideMapPin className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
                 <input
                   type="text"
                   name="clinicAddress"
                   placeholder="Clinic Address"
                   value={formData.clinicAddress}
                   onChange={handleChange}
-                  className="pl-10 w-full py-2 border rounded-md"
+                  className="w-full py-2 pl-10 border rounded-md"
                 />
               </div>
   
               {/* Password */}
               <div className="relative">
-                <LockIcon className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                <LockIcon className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="pl-10 pr-10 w-full py-2 border rounded-md"
+                  className="w-full py-2 pl-10 pr-10 border rounded-md"
                 />
                 <button
                   type="button"
@@ -298,14 +299,14 @@ import {
   
               {/* Confirm Password */}
               <div className="relative">
-                <LockIcon className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                <LockIcon className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
                   placeholder="Confirm Password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="pl-10 pr-10 w-full py-2 border rounded-md"
+                  className="w-full py-2 pl-10 pr-10 border rounded-md"
                 />
                 <button
                   type="button"
@@ -323,7 +324,7 @@ import {
                 Register
               </button>
   
-              <div className="text-center text-sm text-gray-600">
+              <div className="text-sm text-center text-gray-600">
                 Already have an account?{" "}
                 <span
                   className="text-blue-600 cursor-pointer"

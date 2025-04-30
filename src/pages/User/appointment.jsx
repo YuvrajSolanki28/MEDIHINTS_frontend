@@ -9,6 +9,7 @@ export default function AppointmentBooking() {
         email: '',
         contactNumber: '',
         birthDate: '',
+        appointmentDate: '',
         time: '',
         doctor: '',
         department: '',
@@ -25,6 +26,21 @@ export default function AppointmentBooking() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const today = new Date();
+        const birth = new Date(formData.birthDate);
+        const appointment = new Date(`${formData.appointmentDate}T${formData.time}`);
+
+        if (birth > today) {
+            alert("Birthdate cannot be in the future.");
+            return;
+        }
+
+        if (appointment < today) {
+            alert("Appointment date and time cannot be in the past.");
+            return;
+        }
+
         try {
             const response = await axios.post('http://localhost:8000/api/appointments', formData);
             alert(response.data.message);
@@ -34,6 +50,7 @@ export default function AppointmentBooking() {
                 email: '',
                 contactNumber: '',
                 birthDate: '',
+                appointmentDate: '',
                 time: '',
                 doctor: '',
                 department: '',
@@ -44,6 +61,8 @@ export default function AppointmentBooking() {
             console.error(error);
         }
     };
+
+    const getTodayDate = () => new Date().toISOString().split("T")[0];
 
     return (
         <div className="w-full">
@@ -62,136 +81,73 @@ export default function AppointmentBooking() {
                 <div>
                     <h2 className="mb-4 text-3xl font-bold text-gray-900">Book an Appointment</h2>
                     <p className="mb-8 text-gray-600">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat
-                        scelerisque tortor ornare ornare. Convallis felis vitae tortor augue. Velit
-                        nascetur proin massa in. Consequat faucibus porttitor enim et.
+                        Please fill out the form below to schedule an appointment with one of our doctors.
                     </p>
 
-                    <form
-                        className="space-y-4 bg-[#1e2756] rounded-lg p-6"
-                        onSubmit={handleSubmit}
-                    >
+                    <form className="space-y-4 bg-[#1e2756] rounded-lg p-6" onSubmit={handleSubmit}>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div>
-                                <input
-                                    type="text"
-                                    name="fullName"
-                                    value={formData.fullName}
-                                    onChange={handleChange}
-                                    placeholder="Full Name"
-                                    className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <select
-                                    name="gender"
-                                    value={formData.gender}
-                                    onChange={handleChange}
-                                    className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"
-                                    required
-                                >
-                                    <option value="">Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    placeholder="Email"
-                                    className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <input
-                                    type="tel"
-                                    name="contactNumber"
-                                    value={formData.contactNumber}
-                                    onChange={handleChange}
-                                    placeholder="Contact Number"
-                                    className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <input
-                                    type="date"
-                                    name="birthDate"
-                                    value={formData.birthDate}
-                                    onChange={handleChange}
-                                    className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <select
-                                    name="time"
-                                    value={formData.time}
-                                    onChange={handleChange}
-                                    className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"
-                                    required
-                                >
-                                    <option value="">Select Time</option>
-                                    <option value="09:00">09:00 AM</option>
-                                    <option value="10:00">10:00 AM</option>
-                                    <option value="11:00">11:00 AM</option>
-                                    <option value="14:00">02:00 PM</option>
-                                    <option value="15:00">03:00 PM</option>
-                                    <option value="16:00">04:00 PM</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select
-                                    name="doctor"
-                                    value={formData.doctor}
-                                    onChange={handleChange}
-                                    className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"
-                                    required
-                                >
-                                    <option value="">Select Doctor</option>
-                                    <option value="dr-smith">Dr. Smith</option>
-                                    <option value="dr-jones">Dr. Jones</option>
-                                    <option value="dr-williams">Dr. Williams</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select
-                                    name="department"
-                                    value={formData.department}
-                                    onChange={handleChange}
-                                    className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"
-                                    required
-                                >
-                                    <option value="">Select Department</option>
-                                    <option value="cardiology">Cardiology</option>
-                                    <option value="neurology">Neurology</option>
-                                    <option value="pediatrics">Pediatrics</option>
-                                    <option value="orthopedics">Orthopedics</option>
-                                </select>
-                            </div>
-                        </div>
+                            <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="Full Name" className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required />
 
-                        <div>
-                            <textarea
-                                name="messageBox"
-                                value={formData.messageBox}
+                            <select name="gender" value={formData.gender} onChange={handleChange} className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required>
+                                <option value="">Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+
+                            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required />
+
+                            <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} placeholder="Contact Number" className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required />
+
+                            <input
+                                type="date"
+                                name="birthDate"
+                                max={getTodayDate()}
+                                value={formData.birthDate}
                                 onChange={handleChange}
-                                placeholder="Message"
-                                rows={4}
                                 className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"
-                            ></textarea>
+                                required
+                            />
+
+                            <input
+                                type="date"
+                                name="appointmentDate"
+                                min={getTodayDate()}
+                                value={formData.appointmentDate}
+                                onChange={handleChange}
+                                className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"
+                                required
+                            />
+
+                            <select name="time" value={formData.time} onChange={handleChange} className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required>
+                                <option value="">Select Time</option>
+                                <option value="09:00">09:00 AM</option>
+                                <option value="10:00">10:00 AM</option>
+                                <option value="11:00">11:00 AM</option>
+                                <option value="14:00">02:00 PM</option>
+                                <option value="15:00">03:00 PM</option>
+                                <option value="16:00">04:00 PM</option>
+                            </select>
+
+                            <select name="doctor" value={formData.doctor} onChange={handleChange} className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required>
+                                <option value="">Select Doctor</option>
+                                <option value="dr-smith">Dr. Smith</option>
+                                <option value="dr-jones">Dr. Jones</option>
+                                <option value="dr-williams">Dr. Williams</option>
+                            </select>
+
+                            <select name="department" value={formData.department} onChange={handleChange} className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]" required>
+                                <option value="">Select Department</option>
+                                <option value="cardiology">Cardiology</option>
+                                <option value="neurology">Neurology</option>
+                                <option value="pediatrics">Pediatrics</option>
+                                <option value="orthopedics">Orthopedics</option>
+                            </select>
                         </div>
 
-                        <button
-                            type="submit"
-                            className="w-full px-6 py-3 text-white transition duration-200 bg-blue-500 rounded hover:bg-blue-600"
-                        >
+                        <textarea name="messageBox" value={formData.messageBox} onChange={handleChange} placeholder="Message" rows={4} className="w-full p-3 rounded border text-white border-gray-300 bg-[#1e2756]"></textarea>
+
+                        <button type="submit" className="w-full px-6 py-3 text-white transition duration-200 bg-blue-500 rounded hover:bg-blue-600">
                             SUBMIT
                         </button>
                     </form>
