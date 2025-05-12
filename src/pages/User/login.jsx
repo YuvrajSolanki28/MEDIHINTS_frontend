@@ -28,7 +28,7 @@ export default function LoginPage() {
       // Check if it's an admin login attempt
       if (email === "medihints@gmail.com") {
         // Admin login API call
-        const adminResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/adminlogin`, {
+        const adminResponse = await axios.post(`https://medihints-backend.vercel.app/api/adminlogin`, {
           email,
           password,
         });
@@ -44,7 +44,7 @@ export default function LoginPage() {
       }
 
       // Regular user login API call
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
+      const response = await axios.post(`https://medihints-backend.vercel.app/api/login`, {
         email,
         password,
       });
@@ -67,7 +67,7 @@ export default function LoginPage() {
     if (showVerificationCode) {
       setLoading(true);
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/verify-code`, {
+        const response = await fetch(`https://medihints-backend.vercel.app/api/verify-code`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, code: verificationCode }),

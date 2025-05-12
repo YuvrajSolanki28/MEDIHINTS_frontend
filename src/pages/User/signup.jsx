@@ -122,7 +122,7 @@ const handleSubmit = async (e) => {
     }
 
     try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/signup`, {
+        const response = await fetch(`https://medihints-backend.vercel.app/api/signup`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
