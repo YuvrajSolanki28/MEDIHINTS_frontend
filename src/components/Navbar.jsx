@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserCircle, ChevronDown, SettingsIcon, UserIcon } from 'lucide-react';
+import { UserCircle, ChevronDown, SettingsIcon, UserIcon, Menu, X } from 'lucide-react';
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -10,6 +10,7 @@ const Navbar = ({ token }) => {
   const [isPatient, setIsPatient] = useState(false);
   const [isDoctor, setIsDoctor] = useState(false);
   const [isLaboratory, setIsLaboratory] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const profileRef = useRef(null);
 
@@ -39,6 +40,10 @@ const Navbar = ({ token }) => {
 
   const toggleProfileOptions = () => {
     setIsProfileOpen((prev) => !prev);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -78,11 +83,7 @@ const Navbar = ({ token }) => {
               <IoArrowBackCircleOutline className="w-8 h-8" />
             </motion.button>
             <span>MEDI</span>
-            <motion.span
-              className="text-[#00a0ff]"
-            >
-              HINTS
-            </motion.span>
+            <motion.span className="text-[#00a0ff]">HINTS</motion.span>
           </motion.div>
 
           {/* Desktop Links */}
@@ -95,13 +96,25 @@ const Navbar = ({ token }) => {
             {!isToken && <motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/")}>Home</motion.button>}
             {isToken && <motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/Homepage")}>Home</motion.button>}
             <motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/aboutus")}>About us</motion.button>
-            {isPatient &&<motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/services")}>Services</motion.button>}
-            {isPatient &&<motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/doctors")}>Doctors</motion.button>}
+            {isPatient && <motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/services")}>Services</motion.button>}
+            {isPatient && <motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/doctors")}>Doctors</motion.button>}
             <motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/news")}>News</motion.button>
             <motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/contact")}>Contact</motion.button>
             {isDoctor && <motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/appointments_list")}>Appointments</motion.button>}
             {isLaboratory && <motion.button whileHover={{ scale: 1.1 }} className="hover:text-blue-500" onClick={() => navigate("/laboratory")}>Laboratory</motion.button>}
           </motion.div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex items-center lg:hidden">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleMobileMenu}
+              className="text-white focus:outline-none"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </motion.button>
+          </div>
 
           {/* User Options */}
           <div className="items-center hidden space-x-4 lg:flex">
@@ -115,7 +128,7 @@ const Navbar = ({ token }) => {
                 Login
               </motion.button>
             )}
-            {isPatient &&(
+            {isPatient && (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -177,64 +190,99 @@ const Navbar = ({ token }) => {
                       </motion.button>
                     )}
 
-                    {!isToken && <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 focus:outline-none"
-                      onClick={() => {
-                        navigate("/settings");
-                        setIsProfileOpen(false);
-                      }}
-                    >
-                      <SettingsIcon className="w-4 h-4 mr-2" />
-                      Settings
-                    </motion.button>}
+                    {!isToken && (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 focus:outline-none"
+                        onClick={() => {
+                          navigate("/settings");
+                          setIsProfileOpen(false);
+                        }}
+                      >
+                        <SettingsIcon className="w-4 h-4 mr-2" />
+                        Settings
+                      </motion.button>
+                    )}
 
-                    {isPatient && <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 focus:outline-none"
-                      onClick={() => {
-                        navigate("/settings");
-                        setIsProfileOpen(false);
-                      }}
-                    >
-                      <SettingsIcon className="w-4 h-4 mr-2" />
-                      Settings
-                    </motion.button>}
+                    {isPatient && (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 focus:outline-none"
+                        onClick={() => {
+                          navigate("/settings");
+                          setIsProfileOpen(false);
+                        }}
+                      >
+                        <SettingsIcon className="w-4 h-4 mr-2" />
+                        Settings
+                      </motion.button>
+                    )}
 
-                    {isDoctor &&<motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 focus:outline-none"
-                      onClick={() => {
-                        navigate("/doctor_settings");
-                        setIsProfileOpen(false);
-                      }}
-                    >
-                      <SettingsIcon className="w-4 h-4 mr-2" />
-                      Settings
-                    </motion.button>}
+                    {isDoctor && (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 focus:outline-none"
+                        onClick={() => {
+                          navigate("/doctor_settings");
+                          setIsProfileOpen(false);
+                        }}
+                      >
+                        <SettingsIcon className="w-4 h-4 mr-2" />
+                        Settings
+                      </motion.button>
+                    )}
 
-                    {isLaboratory && <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 focus:outline-none"
-                      onClick={() => {
-                        navigate("/settings");
-                        setIsProfileOpen(false);
-                      }}
-                    >
-                      <SettingsIcon className="w-4 h-4 mr-2" />
-                      Settings
-                    </motion.button>}
-
+                    {isLaboratory && (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 focus:outline-none"
+                        onClick={() => {
+                          navigate("/settings");
+                          setIsProfileOpen(false);
+                        }}
+                      >
+                        <SettingsIcon className="w-4 h-4 mr-2" />
+                        Settings
+                      </motion.button>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
           </div>
         </nav>
+
+        {/* Mobile Menu Dropdown */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="flex flex-col px-4 pb-4 space-y-2 lg:hidden"
+            >
+              {!isToken && <button className="hover:text-blue-400" onClick={() => navigate("/")}>Home</button>}
+              {isToken && <button className="hover:text-blue-400" onClick={() => navigate("/Homepage")}>Home</button>}
+              <button className="hover:text-blue-400" onClick={() => navigate("/aboutus")}>About us</button>
+              {isPatient && <button className="hover:text-blue-400" onClick={() => navigate("/services")}>Services</button>}
+              {isPatient && <button className="hover:text-blue-400" onClick={() => navigate("/doctors")}>Doctors</button>}
+              <button className="hover:text-blue-400" onClick={() => navigate("/news")}>News</button>
+              <button className="hover:text-blue-400" onClick={() => navigate("/contact")}>Contact</button>
+              {isDoctor && <button className="hover:text-blue-400" onClick={() => navigate("/appointments_list")}>Appointments</button>}
+              {isLaboratory && <button className="hover:text-blue-400" onClick={() => navigate("/laboratory")}>Laboratory</button>}
+              {!isToken && (
+                <button className="px-4 py-2 mt-2 text-blue-800 bg-white rounded-full hover:bg-blue-200" onClick={() => navigate("/choose_account")}>Login</button>
+              )}
+              {isPatient && (
+                <button className="px-4 py-2 text-white rounded-full bg-sky-500 hover:bg-sky-600" onClick={() => navigate("/appointment")}>Appointment</button>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.header>
   );
