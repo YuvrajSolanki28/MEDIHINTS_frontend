@@ -12,7 +12,7 @@ function ForgotPassword() {
         e.preventDefault();
         setIsSending(true);
         try {
-            const response = await axios.post('http://localhost:8000/api/forgotpassword', { email });
+            const response = await axios.post('https://medihints-backend.vercel.app/api/forgotpassword', { email });
 
             const successMessage =
                 typeof response.data === 'string'
