@@ -35,7 +35,7 @@ export default function EditProfile() {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/api/update-profile", {
+      const response = await fetch("https://medihints-backend.vercel.app/api/update-profile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

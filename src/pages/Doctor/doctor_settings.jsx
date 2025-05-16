@@ -16,7 +16,7 @@ export default function Settings() {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    const endpoint = "http://localhost:8000/api/doctor/logout";
+    const endpoint = "https://medihints-backend.vercel.app/api/doctor/logout";
 
     try {
       const response = await fetch(endpoint, {

@@ -42,7 +42,7 @@ export default function AppointmentBooking() {
         }
 
         try {
-            const response = await axios.post('http://localhost:8000/api/appointments', formData);
+            const response = await axios.post('https://medihints-backend.vercel.app/api/appointments', formData);
             alert(response.data.message);
             setFormData({
                 fullName: '',

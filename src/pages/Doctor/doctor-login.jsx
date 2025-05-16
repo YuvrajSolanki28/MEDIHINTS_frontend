@@ -27,7 +27,7 @@ export default function DoctorLogin() {
     try {
       // Admin login logic
       if (email === "medihints@gmail.com") {
-        const adminResponse = await axios.post(`http://localhost:8000/api/adminlogin`, {
+        const adminResponse = await axios.post(`https://medihints-backend.vercel.app/api/adminlogin`, {
           email,
           password,
         });

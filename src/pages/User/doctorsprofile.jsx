@@ -1,9 +1,7 @@
-import { motion } from "framer-motion";
-import { 
-    PhoneIcon, ClockIcon, AwardIcon, 
-    BookOpenIcon, StarIcon, CalendarIcon 
-} from "lucide-react";
 import React from "react";
+import { motion } from "framer-motion";
+import { PhoneIcon, ClockIcon, AwardIcon, BookOpenIcon, StarIcon, CalendarIcon } from "lucide-react";
+
 import { useNavigate } from 'react-router-dom';
 
 export default function DoctorProfile() {

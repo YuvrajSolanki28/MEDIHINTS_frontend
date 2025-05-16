@@ -1,16 +1,5 @@
-import {
-    Activity,
-    Heart,
-    Thermometer,
-    Watch,
-    Battery,
-    Download,
-    AlertCircle,
-    CheckCircle2,
-    XCircle,
-    BarChart3,
-  } from "lucide-react";
-  import React from "react";
+import { Activity, Heart, Thermometer, Watch, Battery, Download, AlertCircle, CheckCircle2, XCircle, BarChart3,} from "lucide-react";
+import React from "react";
   import { render } from "react-dom";
   export default function HealthMonitoringSystem() {
     return (

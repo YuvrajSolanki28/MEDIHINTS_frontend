@@ -56,7 +56,7 @@ function ResetPassword() {
 
         setIsLoading(true);
         try {
-            const response = await axios.post(`http://localhost:8000/api/resetpassword/${token}`, {
+            const response = await axios.post(`https://medihints-backend.vercel.app/api/resetpassword/${token}`, {
                 newPassword: formData.newPassword,
             });
             setMessage(response.data);

@@ -23,7 +23,7 @@ const ProfilePage = () => {
             if (!token) return;
 
             try {
-                const response = await fetch(`http://localhost:8000/api/users/${token}`, {
+                const response = await fetch(`https://medihints-backend.vercel.app/api/users/${token}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

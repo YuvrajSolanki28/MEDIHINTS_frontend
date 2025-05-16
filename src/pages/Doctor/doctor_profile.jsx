@@ -23,7 +23,7 @@ const DoctorProfiles = () => {
                     if (!token) return;
         
                     try {
-                        const response = await fetch(`http://localhost:8000/api/doctor/${token}`, {
+                        const response = await fetch(`https://medihints-backend.vercel.app/api/doctor/${token}`, {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",

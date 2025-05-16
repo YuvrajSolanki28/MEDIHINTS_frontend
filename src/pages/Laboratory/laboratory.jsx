@@ -1,12 +1,4 @@
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Microscope,
-  Users,
-  Camera,
-  Map,
-} from "lucide-react";
+import { MapPin, Phone, Mail, Microscope, Users, Camera, Map} from "lucide-react";
 import React, { useState } from "react";
 
 export default function LaboratoryShowPage() {

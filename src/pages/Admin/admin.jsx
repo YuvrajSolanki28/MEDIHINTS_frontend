@@ -22,10 +22,10 @@ export default function AdminDashboard() {
         const fetchData = async () => {
             try {
                 const [usersResponse, drResponse, labResponse, appointmentResponse] = await Promise.all([
-                    axios.get("http://localhost:8000/api/user"),
-                    axios.get("http://localhost:8000/api/doctor"),
-                    axios.get("http://localhost:8000/api/laboratory"),
-                    axios.get("http://localhost:8000/api/appointment"),
+                    axios.get("https://medihints-backend.vercel.app/api/user"),
+                    axios.get("https://medihints-backend.vercel.app/api/doctor"),
+                    axios.get("https://medihints-backend.vercel.app/api/laboratory"),
+                    axios.get("https://medihints-backend.vercel.app/api/appointment"),
                 ]);
 
                 setTables({

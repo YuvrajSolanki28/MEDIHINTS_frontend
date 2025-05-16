@@ -25,7 +25,7 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      const response = await axios.post(`http://localhost:8000/api/login/doctor`, {
+      const response = await axios.post(`https://medihints-backend.vercel.app/api/login/doctor`, {
         email,
         password,
       });
@@ -48,7 +48,7 @@ export default function LoginPage() {
     if (showVerificationCode) {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:8000/api/verify-code/doctor`, {
+        const response = await fetch(`https://medihints-backend.vercel.app/api/verify-code/doctor`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, code: verificationCode }),

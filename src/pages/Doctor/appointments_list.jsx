@@ -12,7 +12,7 @@ export default function AppointmentList() {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/doctor/appointment");
+        const res = await axios.get("https://medihints-backend.vercel.app/api/doctor/appointment");
         setAppointments(
           res.data.data.map((appt) => ({
             _id: appt._id,
@@ -37,7 +37,7 @@ export default function AppointmentList() {
   const handleConfirm = async (id) => {
     try {
       // Optional: Persist status change via API
-      // await axios.post(`http://localhost:8000/api/doctor/appointment/confirm/${id}`);
+      // await axios.post(`https://medihints-backend.vercel.app/api/doctor/appointment/confirm/${id}`);
       setAppointments((prev) =>
         prev.map((app) => (app._id === id ? { ...app, status: "confirmed" } : app))
       );
@@ -49,7 +49,7 @@ export default function AppointmentList() {
   const handleCancel = async (id) => {
     try {
       // Optional: Persist status change via API
-      // await axios.post(`http://localhost:8000/api/doctor/appointment/cancel/${id}`);
+      // await axios.post(`https://medihints-backend.vercel.app/api/doctor/appointment/cancel/${id}`);
       setAppointments((prev) =>
         prev.map((app) => (app._id === id ? { ...app, status: "cancelled" } : app))
       );
